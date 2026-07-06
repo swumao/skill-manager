@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,4 +17,5 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
+      - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
       - run: npm publish
