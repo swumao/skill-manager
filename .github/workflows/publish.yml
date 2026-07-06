@@ -18,7 +18,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
-      - run: |
-          unset NODE_AUTH_TOKEN
-          npm config delete "//registry.npmjs.org/:_authToken"
+      - run: npm version
+      - run: npm config list
+      - run: echo "--- npmrc content ---"; cat "${NPM_CONFIG_USERCONFIG}" 2>/dev/null || echo "no temp npmrc"
+      - run: echo "--- env ---"; env | grep -i npm 2>/dev/null || true; env | grep -i auth 2>/dev/null || true; env | grep -i token 2>/dev/null || true; env | grep -i oidc 2>/dev/null || true
       - run: npm publish --provenance --access public
