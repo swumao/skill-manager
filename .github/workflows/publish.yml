@@ -18,6 +18,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
-      - run: npm whoami 2>&1 || true
-      - run: cat ~/.npmrc 2>&1 || true
+      - run: |
+          unset NODE_AUTH_TOKEN
+          rm -f "${NPM_CONFIG_USERCONFIG}"
+          npm config set registry https://registry.npmjs.org
       - run: npm publish --provenance --access public
