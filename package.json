@@ -1,6 +1,6 @@
 {
   "name": "@swumao/skill-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI Agent Skill 集中化管理 CLI 工具",
   "type": "module",
   "bin": {
