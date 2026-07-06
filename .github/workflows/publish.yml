@@ -15,10 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: |
-          echo "=== npm version ===" && npm --version
-          echo "=== NODE_AUTH_TOKEN ===" && node -e "console.log(JSON.stringify(process.env.NODE_AUTH_TOKEN))"
-          echo "=== NPM_CONFIG_USERCONFIG exists ===" && test -f "$NPM_CONFIG_USERCONFIG" && echo YES || echo NO
       - run: npm ci
       - run: npm run build
+      - run: npm login --auth-type=web --registry=https://registry.npmjs.org
       - run: npm publish --provenance --access public
