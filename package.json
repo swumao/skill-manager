@@ -18,6 +18,7 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
+    "prepare": "npm run build",
     "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
@@ -35,11 +36,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opencode-ai/skill-manager.git"
+    "url": "git+https://github.com/swumao/skill-manager.git"
   },
-  "homepage": "https://github.com/opencode-ai/skill-manager#readme",
+  "homepage": "https://github.com/swumao/skill-manager#readme",
   "bugs": {
-    "url": "https://github.com/opencode-ai/skill-manager/issues"
+    "url": "https://github.com/swumao/skill-manager/issues"
   },
   "license": "MIT",
   "author": "OpenCode AI",
