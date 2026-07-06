@@ -20,6 +20,5 @@ jobs:
       - run: npm run build
       - run: |
           unset NODE_AUTH_TOKEN
-          rm -f "${NPM_CONFIG_USERCONFIG}"
-          npm config set registry https://registry.npmjs.org
+          npm config delete "//registry.npmjs.org/:_authToken"
       - run: npm publish --provenance --access public
