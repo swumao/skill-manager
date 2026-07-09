@@ -28,7 +28,7 @@ async function main() {
   const presetStore = new PresetStore(configStore);
   const applier = new Applier(skillStore);
 
-  registerSkillCommands(program, skillStore);
+  registerSkillCommands(program, skillStore, presetStore);
   registerPresetCommands(program, presetStore, skillStore, configStore);
   registerApplyCommands(program, applier, skillStore, presetStore);
   registerConfigCommands(program, configStore);

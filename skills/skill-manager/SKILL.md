@@ -1,12 +1,26 @@
 ---
 name: skill-manager
 version: 0.1.0
-description: "skill-manager CLI 工具使用指南 — Skill 集中化管理、Preset 方案管理、应用到 Agent"
+description: "skill-manager CLI 工具使用指南 — Skill 集中化管理、Preset 方案管理、应用到 Agent, 如果没有合适的Skill，也可以用来find Skill"
 ---
 
 # skill-manager
 
 skill-manager 是 AI Agent Skill 的集中化管理 CLI 工具。它帮助你统一管理所有 skill，按 Preset（方案）组织，并应用到不同的 Agent 路径中。
+
+## AI 工作流程：查找并使用 Skill
+
+当收到用户需求但当前没有合适的 Skill 可用时，按以下步骤操作：
+
+1. **查找 Skill** — 用 `skill skill find <关键词>` 在全局仓库中搜索匹配的 Skill。先用宽泛的关键词搜索，如果没有结果再换其他关键词尝试。
+2. **找到后 Apply** — 如果找到了匹配的 Skill，将其应用到当前 Agent 目录：
+   ```bash
+   skill apply skills . <skill-name> -p auto -m symlink
+   ```
+   （`.` 表示当前 Agent 项目根目录，`-p auto` 指定 Preset 目录名）
+3. **直接使用** — Apply 完成后，Skill 的指令和资源位于 `.skills/auto/<skill-name>/` 下，可直接按照该 Skill 的指引完成任务。
+
+如果 `skill skill find` 没有找到合适的 Skill，告知用户当前仓库中无可用的匹配 Skill。
 
 ## 快速开始
 
@@ -48,6 +62,23 @@ skill skill add <skill-directory-path>
 ```
 
 `<skill-directory-path>` 是包含 `SKILL.md` 的本地目录。
+
+### 查找 Skill 并查看所在 Preset
+
+```bash
+skill skill find <skill-name>
+```
+
+输出示例：
+```
+docx v0.1.0
+  Use this skill whenever the user wants to create, read, edit...
+  /Users/xxx/.config/skill-manager/repository/docx
+
+  所在 Preset:
+    • data-analysis — 数据分析相关 skill
+    • writing — 写作辅助
+```
 
 ### 从仓库删除 Skill
 
