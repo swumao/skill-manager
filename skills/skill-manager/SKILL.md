@@ -32,6 +32,8 @@ skill --help
 skill skill --help
 skill preset --help
 skill apply --help
+skill unapply --help
+skill update --help
 ```
 
 ## Skill 仓库管理
@@ -173,6 +175,43 @@ skill apply list <agent-path>
 
 ```bash
 skill apply remove <agent-path> <skill1> <skill2> -p <preset-name>
+```
+
+## 撤销已应用的 Skill（unapply）
+
+`unapply` 是 `apply` 的反操作，支持撤销整个 preset 或单个 skill。
+
+### 撤销整个 Preset
+
+```bash
+skill unapply preset <agent-path> <preset-name>
+```
+
+这会删除 `.skills/<preset-name>/` 整个目录。
+
+### 撤销指定 Skill
+
+```bash
+skill unapply skills <agent-path> <skill1> <skill2> -p <preset-name>
+```
+
+## 版本升级
+
+### 手动升级
+
+```bash
+skill update
+```
+
+自动检查 npm 最新版本并执行 `npm install -g @swumao/skill-manager@latest`。
+
+### 自动版本提醒
+
+运行任意命令时（`--version` 和 `update` 自身除外），CLI 会在后台自动检查最新版本。如果当前版本不是最新，会输出提醒：
+
+```
+⚡ 最新版本 0.2.0 可用，当前版本 0.1.5
+   skill update 升级到最新版
 ```
 
 ## 配置

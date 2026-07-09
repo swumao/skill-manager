@@ -10,6 +10,16 @@ export function registerApplyCommands(
   skillStore: SkillStore,
   presetStore: PresetStore
 ): void {
+  registerApplySubCommands(program, applier, skillStore, presetStore);
+  registerUnapplyCommands(program, applier);
+}
+
+function registerApplySubCommands(
+  program: Command,
+  applier: Applier,
+  skillStore: SkillStore,
+  presetStore: PresetStore
+): void {
   const applyCmd = program.command("apply").description("应用 Skill 到指定 Agent 目录");
 
   applyCmd
@@ -93,6 +103,42 @@ export function registerApplyCommands(
       try {
         await applier.remove(agentPath, skills, options.preset);
         console.log(pc.green("✓"), `Skill 已从 ${pc.cyan(agentPath)} 移除`);
+      } catch (e) {
+        console.error(pc.red("✗"), (e as Error).message);
+        process.exit(1);
+      }
+    });
+}
+
+function registerUnapplyCommands(program: Command, applier: Applier): void {
+  const unapplyCmd = program.command("unapply").description("撤销已应用到 Agent 的 Skill（apply 的反操作）");
+
+  unapplyCmd
+    .command("preset")
+    .description("撤销整个 Preset，移除对应的 preset 目录")
+    .argument("<agent-path>", "Agent 项目路径")
+    .argument("<preset-name>", "Preset 名称")
+    .action(async (agentPath: string, presetName: string) => {
+      try {
+        await applier.removePreset(agentPath, presetName);
+        console.log(pc.green("✓"), `Preset "${pc.bold(presetName)}" 已从 ${pc.cyan(agentPath)} 撤销`);
+      } catch (e) {
+        console.error(pc.red("✗"), (e as Error).message);
+        process.exit(1);
+      }
+    });
+
+  unapplyCmd
+    .command("skills")
+    .description("撤销指定的 skill")
+    .argument("<agent-path>", "Agent 项目路径")
+    .argument("<skills...>", "要撤销的 skill 名称")
+    .option("-p, --preset <name>", "从指定 preset 目录撤销")
+    .action(async (agentPath: string, skills: string[], options: { preset?: string }) => {
+      try {
+        await applier.remove(agentPath, skills, options.preset);
+        console.log(pc.green("✓"), `Skill 已从 ${pc.cyan(agentPath)} 撤销`);
+        if (options.preset) console.log(`  Preset: ${options.preset}`);
       } catch (e) {
         console.error(pc.red("✗"), (e as Error).message);
         process.exit(1);

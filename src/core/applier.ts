@@ -90,6 +90,15 @@ export class Applier {
     }
   }
 
+  async removePreset(agentPath: string, presetName: string): Promise<void> {
+    const agentSkillsDir = join(agentPath, ".skills");
+    const presetDir = join(agentSkillsDir, presetName);
+    if (!existsSync(presetDir)) {
+      throw new Error(`Preset "${presetName}" 未应用到 ${agentPath}`);
+    }
+    await rm(presetDir, { recursive: true, force: true });
+  }
+
   private async copyDir(src: string, dest: string): Promise<void> {
     await mkdir(dest, { recursive: true });
     const entries = await readdir(src, { withFileTypes: true });
