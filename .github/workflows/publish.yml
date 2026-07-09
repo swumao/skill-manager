@@ -4,6 +4,10 @@ on:
   push:
     branches: [main, master]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -11,11 +15,12 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
       - run: npm ci
-      - run: npm run build
-      - run: npm login --auth-type=web --registry=https://registry.npmjs.org
-      - run: npm publish --provenance --access public
+      - run: npm run build --if-persent
+      - run: npm publish
